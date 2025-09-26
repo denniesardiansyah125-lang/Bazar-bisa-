@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BazarBisa — Toko Online Lokal</title>
+  <meta name="description" content="BazarBisa - Toko online sederhana, cepat, dan ramah mobile." />
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #0ea5a4;
+      --accent-dark: #028a87;
+      --danger: #ef4444;
+      --radius: 12px;
+      --shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    * { box-sizing: border-box; font-family: "Poppins", system-ui, sans-serif; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f9fafb, #f1f5f9);
+      color: #111827;
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 52px; height: 52px; border-radius: var(--radius);
+      background: linear-gradient(135deg,var(--accent),var(--accent-dark));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 18px; box-shadow: var(--shadow);
+    }
+    h1 { margin: 0; font-size: 20px; }
+    .small { font-size: 13px; color: var(--muted); }
+
+    .search { flex: 1; min-width: 240px; }
+    .search input {
+      width: 100%; padding: 10px 12px; border-radius: var(--radius);
+      border: 1px solid #e5e7eb; outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .search input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(14,165,164,0.2);
+    }
+
+    .btn, .ghost {
+      border: none; border-radius: var(--radius); cursor: pointer;
+      font-size: 14px; transition: 0.2s;
+    }
+    .btn {
+      background: var(--accent); color: #fff; padding: 10px 14px;
+      box-shadow: var(--shadow);
+    }
+    .btn:hover { background: var(--accent-dark); }
+    .ghost {
+      background: #fff; border: 1px solid #e5e7eb; padding: 8px 12px;
+    }
+    .ghost:hover { background: #f9fafb; }
+
+    .hero {
+      display: grid; grid-template-columns: 1fr 320px; gap: 18px;
+      margin: 20px 0;
+    }
+    .hero-card {
+      background: var(--card); padding: 18px; border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero h2 { margin: 0 0 8px; }
+    .tagline { color: var(--muted); margin-bottom: 12px; }
+
+    .products {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 16px; margin-top: 20px;
+    }
+    .product {
+      background: var(--card); padding: 14px; border-radius: var(--radius);
+      box-shadow: var(--shadow); display: flex; flex-direction: column;
+      transition: transform 0.2s;
+    }
+    .product:hover { transform: translateY(-4px); }
+    .img {
+      height: 140px; border-radius: var(--radius); margin-bottom: 10px;
+      background: linear-gradient(135deg,#ecfeff,#e0fdfa);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: #064e46; font-size: 20px;
+    }
+    .p-title { font-weight: 600; margin-bottom: 6px; }
+    .p-desc { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+    .p-row { display: flex; align-items: center; justify-content: space-between; }
+
+    .cart-panel {
+      position: fixed; right: 20px; bottom: 20px; width: 320px;
+      background: var(--card); border-radius: var(--radius);
+      padding: 14px; box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    }
+    .cart-rows { max-height: 260px; overflow: auto; margin-top: 8px; }
+    .cart-item { display: flex; justify-content: space-between;
+      align-items: center; padding: 8px 0; border-bottom: 1px dashed #e5e7eb;
+    }
+    .cart-item:last-child { border-bottom: 0; }
+    .qty button {
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 6px; width: 22px; height: 22px; cursor: pointer;
+    }
+
+    .total { display: flex; justify-content: space-between; font-weight: 700; margin-top: 8px; }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal {
+      background: var(--card); padding: 20px; border-radius: var(--radius);
+      width: 400px; max-width: 90%; box-shadow: var(--shadow);
+    }
+    .modal input, .modal textarea {
+      width: 100%; padding: 10px; border: 1px solid #e5e7eb;
+      border-radius: var(--radius); margin-top: 6px;
+    }
+
+    footer {
+      margin-top: 30px; text-align: center; color: var(--muted); font-size: 13px;
+    }
+
+    @media (max-width:880px) {
+      .hero { grid-template-columns: 1fr; }
+      .cart-panel { width: 92vw; left: 4vw; right: 4vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">BB</div>
+        <div>
+          <h1>BazarBisa</h1>
+          <div class="small">Belanja cepat — dukung usaha lokal</div>
+        </div>
+      </div>
+
+      <div class="search"><input id="search" placeholder="Cari produk..." /></div>
+
+      <div class="top-actions">
+        <button class="ghost" id="viewOrders">Pesanan</button>
+        <button class="btn" id="openCart">Keranjang (<span id="cartCount">0</span>)</button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-card">
+        <h2>Promo Hari Ini 🚚</h2>
+        <div class="tagline">Gratis ongkir di atas Rp150.000</div>
+        <button class="btn" onclick="filterCategory('semua')">Semua Produk</button>
+        <button class="ghost" onclick="filterCategory('populer')">Populer</button>
+        <button class="ghost" onclick="filterCategory('diskon')">Diskon</button>
+      </div>
+
+      <aside class="hero-card">
+        <h3>Langkah Belanja</h3>
+        <ol class="small">
+          <li>Pilih produk</li><li>Periksa keranjang</li><li>Bayar (demo)</li>
+        </ol>
+      </aside>
+    </div>
+
+    <div class="products" id="productGrid"></div>
+
+    <div id="cartPanel" class="cart-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>Keranjang</strong>
+        <button class="ghost" onclick="clearCart()">Kosongkan</button>
+      </div>
+      <div class="cart-rows" id="cartRows"></div>
+      <div class="total"><span>Total</span><span id="cartTotal">Rp0</span></div>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <button class="btn" onclick="checkout()">Checkout</button>
+        <button class="ghost" onclick="toggleCart(false)">Tutup</button>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="modal">
+      <div class="modal">
+        <h3>Checkout</h3>
+        <input id="buyerName" placeholder="Nama penerima" />
+        <input id="buyerPhone" placeholder="Nomor telepon" />
+        <textarea id="buyerAddress" placeholder="Alamat lengkap"></textarea>
+        <div style="margin-top:12px;text-align:right">
+          <button class="ghost" onclick="closeModal()">Batal</button>
+          <button class="btn" onclick="placeOrder()">Bayar (Demo)</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>© 2025 BazarBisa — Demo UI, bukan transaksi nyata.</footer>
+  </div>
+
+  <script>
+    const products = [
+      {id:'p1', name:'Sabun Organik', price:29000, desc:'Sabun alami segar', tag:'populer'},
+      {id:'p2', name:'Tas Kanvas Eco', price:125000, desc:'Tas kanvas minimalis', tag:'diskon'},
+      {id:'p3', name:'Headphone BT', price:399000, desc:'Suara jernih, baterai awet', tag:'populer'},
+      {id:'p4', name:'Lampu LED Meja', price:159000, desc:'Hemat energi, 3 mode', tag:'semua'},
+      {id:'p5', name:'Buku Catatan A5', price:25000, desc:'Kertas tebal 120 halaman', tag:'diskon'},
+      {id:'p6', name:'Sepatu Kasual', price:299000, desc:'Nyaman untuk harian', tag:'populer'}
+    ];
+
+    const productGrid = document.getElementById('productGrid');
+    const cartRows = document.getElementById('cartRows');
+    const cartCountEl = document.getElementById('cartCount');
+    const cartTotalEl = document.getElementById('cartTotal');
+    const modal = document.getElementById('modal');
+
+    let cart = JSON.parse(localStorage.getItem('bb_cart') || '{}');
+
+    function priceFmt(n){ return 'Rp'+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+    function renderProducts(list){
+      productGrid.innerHTML='';
+      list.forEach(p=>{
+        const el=document.createElement('div'); el.className='product';
+        el.innerHTML=`
+          <div class="img">${p.name[0]+p.name[1]}</div>
+          <div class="p-title">${p.name}</div>
+          <div class="p-desc">${p.desc}</div>
+          <div class="p-row">
+            <strong>${priceFmt(p.price)}</strong>
+            <button class="btn" onclick="addToCart('${p.id}')">Tambah</button>
+          </div>`;
+        productGrid.appendChild(el);
+      });
+    }
+
+    function addToCart(id){
+      const prod=products.find(p=>p.id===id);
+      if(!cart[id]) cart[id]={qty:0,item:prod};
+      cart[id].qty++;
+      saveCart(); renderCart();
+    }
+
+    function saveCart(){ localStorage.setItem('bb_cart',JSON.stringify(cart)); }
+    function renderCart(){
+      cartRows.innerHTML=''; let total=0,cnt=0;
+      Object.keys(cart).forEach(k=>{
+        const c=cart[k];
+        const line=document.createElement('div'); line.className='cart-item';
+        line.innerHTML=`<span>${c.item.name} x${c.qty}</span>
+          <div class="qty">
+            <button onclick="changeQty('${k}',-1)">-</button>
+            <button onclick="changeQty('${k}',1)">+</button>
+          </div>`;
+        cartRows.appendChild(line);
+        total+=c.item.price*c.qty; cnt+=c.qty;
+      });
+      cartCountEl.textContent=cnt; cartTotalEl.textContent=priceFmt(total);
+      if(cnt===0) cartRows.innerHTML='<div class="small">Keranjang kosong</div>';
+    }
+    function changeQty(k,d){ if(!cart[k])return; cart[k].qty+=d; if(cart[k].qty<=0) delete cart[k]; saveCart(); renderCart(); }
+    function clearCart(){ cart={}; saveCart(); renderCart(); }
+    function toggleCart(show=true){ document.getElementById('cartPanel').style.display=show?'block':'none'; }
+    document.getElementById('openCart').addEventListener('click',()=>toggleCart(true));
+
+    function checkout(){ modal.style.display='flex'; }
+    function closeModal(){ modal.style.display='none'; }
+    function placeOrder(){
+      const n=document.getElementById('buyerName').value;
+      if(!n){alert('Isi nama!');return;}
+      alert('Pesanan demo berhasil disimpan.');
+      cart={}; saveCart(); renderCart(); closeModal();
+    }
+
+    document.getElementById('search').addEventListener('input',e=>{
+      const q=e.target.value.toLowerCase();
+      renderProducts(products.filter(p=>p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)));
+    });
+    function filterCategory(tag){
+      if(tag==='semua') renderProducts(products);
+      else renderProducts(products.filter(p=>p.tag===tag));
+    }
+
+    renderProducts(products); renderCart(); toggleCart(false);
+  </script>
+</body>
+</html>
